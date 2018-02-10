@@ -15,11 +15,10 @@ auth.set_access_token(api_keys["access_token"], api_keys["access_token_secret"])
 api = tweepy.API(auth)
 
 while True:
-    x, y = numpy.meshgrid(*([numpy.linspace(-1, 1, 25)] * 2))
-    coeffs = numpy.random.rand(2, 2) - 0.5
+    x, y = numpy.meshgrid(*([numpy.linspace(-1, 1, 250)] * 2))
+    coeffs = numpy.random.rand(6, 6) - 0.5
     stuff = numpy.polynomial.polynomial.polyval2d(x, y, coeffs)
     plt.pcolormesh(stuff, cmap="plasma")
-    # plt.show()
     plt.savefig("tmp.png")
     plt.cla()
     api.update_with_media("tmp.png")
