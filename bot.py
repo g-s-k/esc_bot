@@ -23,5 +23,11 @@ sentences = pat.findall(data)
 while True:
     indx = np.random.randint(0, len(sentences) - 1)
     tweet = re.sub(r"<.*?>", "", sentences[indx])[:280]
-    api.update_status(tweet)
+    try:
+        api.update_status(tweet)
+    except tweepy.TweepError as err:
+        if err["message"] == "Status is a duplicate.":
+            pass
+        else:
+            raise
     time.sleep(37)
