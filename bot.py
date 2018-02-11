@@ -2,11 +2,11 @@
 
 import json
 import tweepy
-import numpy
-import matplotlib.pyplot as plt
+import re
 import time
+import numpy as np
 
-with open("keys.json") as f:
+with open("keys.json", "r") as f:
     api_keys = json.load(f)
 
 auth = tweepy.OAuthHandler(api_keys["consumer_key"], api_keys["consumer_secret"])
@@ -14,12 +14,13 @@ auth.set_access_token(api_keys["access_token"], api_keys["access_token_secret"])
 
 api = tweepy.API(auth)
 
+with open("tweets.txt", "r") as f:
+    data = f.read()
+
+words = re.findall(r"\w+", data)
+
 while True:
-    x, y = numpy.meshgrid(*([numpy.linspace(-1, 1, 250)] * 2))
-    coeffs = numpy.random.rand(6, 6) - 0.5
-    stuff = numpy.polynomial.polynomial.polyval2d(x, y, coeffs)
-    plt.pcolormesh(stuff, cmap="plasma")
-    plt.savefig("tmp.png")
-    plt.cla()
-    api.update_with_media("tmp.png")
-    time.sleep(10)
+    indx = np.random.randint(0, len(words), 12)
+    tweet = " ".join([words[i] for i in indx])
+    api.update_status(tweet)
+    time.sleep(37)
