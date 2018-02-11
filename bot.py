@@ -14,13 +14,13 @@ auth.set_access_token(api_keys["access_token"], api_keys["access_token_secret"])
 
 api = tweepy.API(auth)
 
-with open("tweets.txt", "r") as f:
+with open("bread.txt", "r") as f:
     data = f.read()
 
-words = re.findall(r"\w+", data)
+pat = re.compile(r"[A-Z][^\.!?]?*[\.!?]", data)
+sentences = pat.findall(data)
 
 while True:
-    indx = np.random.randint(0, len(words), 12)
-    tweet = " ".join([words[i] for i in indx])
-    api.update_status(tweet)
+    indx = np.random.randint(0, len(sentences))
+    api.update_status(sentences[indx])
     time.sleep(37)
