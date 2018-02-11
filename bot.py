@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import json
 import tweepy
 import re
@@ -14,7 +15,7 @@ auth.set_access_token(api_keys["access_token"], api_keys["access_token_secret"])
 
 api = tweepy.API(auth)
 
-with open("bread.txt", "r") as f:
+with open(sys.argv[1], "r") as f:
     data = f.read()
 
 pat = re.compile(r"[A-Z][^\.!?]*?[\.!?]", re.M)
