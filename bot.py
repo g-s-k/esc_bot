@@ -26,7 +26,7 @@ while True:
     try:
         api.update_status(tweet)
     except tweepy.TweepError as err:
-        if err["message"] == "Status is a duplicate.":
+        if err[0]["message"] == "Status is a duplicate.":
             pass
         else:
             raise
