@@ -17,11 +17,11 @@ api = tweepy.API(auth)
 with open("bread.txt", "r") as f:
     data = f.read()
 
-pat = re.compile(r"[A-Z][^\.!?]*[\.!?]", re.M)
+pat = re.compile(r"[A-Z][^\.!?]*?[\.!?]", re.M)
 sentences = pat.findall(data)
 
 while True:
     indx = np.random.randint(0, len(sentences) - 1)
-    tweet = sentences[indx][:280]
+    tweet = re.sub(r"<.*?>", "", sentences[indx])[:280]
     api.update_status(tweet)
     time.sleep(37)
