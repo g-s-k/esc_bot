@@ -18,19 +18,18 @@ api = tweepy.API(auth)
 with open(sys.argv[1], "r") as f:
     data = f.read()
 
-pat = re.compile(r"[A-Z][^\.!?]*?[\.!?]", re.M)
+pat = re.compile(r"[A-Z][a-z][^\.!?]{60,270}?[\.!?]", re.M)
 sentences = pat.findall(data)
 
-while True:
-    indx = np.random.randint(0, len(sentences) - 1)
-    tweet = re.sub(r"<.*?>", "", sentences[indx])[:280]
-    try:
-        api.update_status(tweet)
-    except tweepy.TweepError as err:
-        print(err)
-        if err.api_code == 187:
-            print("Duplicate tweet attempted:")
-            print(tweet)
-        else:
-            raise
-    time.sleep(37)
+for line in sentences:
+    tweet = re.sub(r"\n", " ", re.sub(r"<.*?>", "", line))
+    if len(tweet) <= 279:
+        try:
+            api.update_status(tweet)
+        except tweepy.TweepError as err:
+            if err.api_code == 187:
+                print("Duplicate tweet attempted:")
+                print(tweet)
+            else:
+                raise
+        time.sleep(37)
